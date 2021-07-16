@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html class="h-100">
+    <head>
+        <title>To Be Continued...</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/fontello-98d1acb5/css/tbc-icons.css"/>
+        <link rel="stylesheet" href="assets/app/css/app.css" />
+        <meta name="description" content="Yes*, this is a silly To Be Continued meme generator site. Click to watch."/>
+        <script>
+            var queryString = window.location.search;
+            var urlParams = new URLSearchParams(queryString);
+            var videoId = urlParams.has('v') ? urlParams.get('v') : 'TxobtWAFh8o';
+            document.write('<meta property="og:image" content="https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg">')
+        </script>
+    </head>
+    <body class="h-100">
+        <div class="container h-100">
+            <div class="row align-items-center h-100">
+                <div class="col mx-auto">
+                    <div class="row">
+                        <div id="col-player" class="col p-lg-0">
+                            <div id="player-container" class="embed-responsive embed-responsive-16by9 rounded"><div id="player" class="embed-responsive-item"></div></div>
+                            <div id="overlay" class="embed-responsive embed-responsive-16by9 rounded" onclick="onOverlayClick()"></div>
+                        </div>
+                        <div id="col-editor" class="col col-lg-6 p-lg-0 d-none card text-white bg-dark">
+                            <div class="card-body d-flex align-items-center">
+                                <div>
+                                    <h5>How to use?</h5>
+                                    <ol>
+                                        <li>Paste the YouTube video URL (or video ID) and press <strong>Load</strong>.</li>
+                                        <li>(Optional) If you don't want the video to play from the beginning, seek to the point where you want it to start and press <strong>Set to current time</strong>.</li>
+                                        <li>Seek to the point where you want the "To be continued" event to occur and press <strong>Set to current time</strong>.</li>
+                                    </ol>
+                                    <p class="m-0">You can click <strong>Play preview</strong> anytime to make the video jump to the (optionally set) starting point and play.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="editor" class="row d-none">
+                        <div class="col-12 mt-3 form-inline">
+                            <div class="input-group mb-2 mx-auto">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">1. Video ID or URL</div>
+                                </div>
+                                <input type="text" class="form-control" id="editor-video-id" value="Loading..." style="width: 7.5em">
+                                <div class="input-group-append">
+                                    <button class="btn btn-info" type="button" onclick="onClickEditorLoadVideo()">Load</button>
+                                </div>
+                            </div>
+                            <div class="input-group mb-2 mx-auto">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">2. Start time</div>
+                                </div>
+                                <input type="text" class="form-control" id="editor-video-start-time" value="Loading..." onblur="onBlurEditorSetVideoStartTime()" style="width: 5em" placeholder="Seconds (integers only)">
+                                <div class="input-group-append">
+                                    <button class="btn btn-info" type="button" onclick="onClickEditorSetVideoStartTime()">Set to current time</button>
+                                </div>
+                            </div>
+                            <div class="input-group mb-2 mx-auto">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">3. Event time</div>
+                                </div>
+                                <input type="text" class="form-control" id="editor-video-event-time" value="Loading..." onblur="onBlurEditorSetVideoEventTime()" style="width: 5em" placeholder="Seconds (decimals allowed)">
+                                <div class="input-group-append">
+                                    <button class="btn btn-info" type="button" onclick="onClickEditorSetVideoEventTime()">Set to current time</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <div class="row">
+                                <div class="col-12 col-lg-2 pl-lg-0 mb-2">
+                                    <button type="button" class="btn btn-block btn-primary" onclick="onClickPlayAgain()"><i class="icon-play-circled"></i> Play preview</button>
+                                </div>
+                                <div class="col-12 col-lg-8 mb-2 text-right">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend d-none d-lg-flex">
+                                            <div class="input-group-text">Sharable URL</div>
+                                        </div>
+                                        <input type="text" class="form-control" id="editor-video-sharable-url" readonly="readonly" value="Loading..." style="width: 10em">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-2 pr-lg-0 mb-2">
+                                    <a href="#" id="btn-open-sharable-url" target="_blank" class="btn btn-success btn-block"><i class="icon-link-ext"></i> Open in new tab</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="player-controls" class="row mt-2" style="visibility: hidden">
+                        <div class="col p-0">
+                            <button type="button" class="btn btn-primary" onclick="onClickPlayAgain()"><i class="icon-cw"></i> Play again</button> 
+                            <button type="button" class="btn btn-outline-primary border-0 disabled">Oh, go ahead, click it.</button>
+                        </div>
+                        <div class="col p-0 text-right">
+                            <button type="button" class="btn btn-outline-success border-0 disabled">Want to make your own?</button>
+                            <button type="button" onclick="goToEditor()" class="btn btn-success"><i class="icon-file-video"></i> Go to the Editor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <audio controls preload="auto" id="music">
+            <source src="assets/app/audio/short.ogg" type="audio/ogg">
+            <source src="assets/app/audio/short.mp3" type="audio/mpeg">
+        </audio>
+        <script type="text/javascript" src="//www.youtube.com/iframe_api"></script>
+        <script type="text/javascript" src="assets/app/js/app.js"></script>
+    </body>
+</html>
+
+<!--
+
+$strVideoId = filter_input(INPUT_GET, 'v') > '' ? preg_replace("/[^A-Za-z0-9\-\_ ]/", '', filter_input(INPUT_GET, 'v')) : 'TxobtWAFh8o';
+$floVideoEventTime = filter_input(INPUT_GET, 'v') && filter_input(INPUT_GET, 'e') ? floatval(filter_input(INPUT_GET, 'e')) : 255;
+$intVideoStartTime = filter_input(INPUT_GET, 'v') && filter_input(INPUT_GET, 'e') ? intval(filter_input(INPUT_GET, 's')) : 247;
+$bolMuted = intval(filter_input(INPUT_GET, 'm')) > 0;
+
+// TODO add sync correction / automatic measurement?
+// TODO add longer versions of music
+// TODO add fade to black at the end ?
+// TODO add fade out video audio before music starts?
+// ?v=VAsa3EZmahE&e=22.8&s=12
+// ?v=8qGCleYV4cw&e=394.4&s=386
+// ?v=4ChPoT-8T44&e=15.385&s=8&m=1
+
+-->
