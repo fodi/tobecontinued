@@ -133,10 +133,19 @@ function onBlurEditorSetVideoStartTime() {
 }
 
 function onClickEditorLoadVideo() {
-    var loadVideoId = document.getElementById('editor-video-id').value.length <= 11 ?
-            document.getElementById('editor-video-id').value :
-            new URL(document.getElementById('editor-video-id').value).searchParams.get('v');
-    videoId = document.getElementById('editor-video-id').value = loadVideoId;
+    let loadVideoId = document.getElementById('editor-video-id').value;
+    if (loadVideoId.length <= 11) {
+        videoId = loadVideoId;
+    } else {
+        let url = new URL(loadVideoId);
+        if (url.hostname === 'youtu.be') {
+            videoId = url.pathname.substring(1); // Extract video ID from youtu.be/<videoID>
+        } else if (url.hostname === 'www.youtube.com' || url.hostname === 'youtube.com') {
+            videoId = url.searchParams.get('v'); // Extract video ID from youtube.com/watch?v=<videoID>
+        }
+    }
+
+    document.getElementById('editor-video-id').value = videoId;
     player.destroy();
     loadYoutubePlayer();
     updateSharableURL();
